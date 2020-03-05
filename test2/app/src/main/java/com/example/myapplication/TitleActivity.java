@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,6 +16,10 @@ import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.net.URL;
 
 public class TitleActivity extends AppCompatActivity {
 
@@ -40,7 +45,7 @@ public class TitleActivity extends AppCompatActivity {
         {
             can_game_start=false;
         }
-        tips_text=(TextView)findViewById(R.id.tips);
+        tips_text=findViewById(R.id.tips);
 
 
 
@@ -67,11 +72,7 @@ public class TitleActivity extends AppCompatActivity {
             clickHandler.sendEmptyMessage(0);
         }
     };
-    private Handler clickHandler = new Handler() {
-        public void handleMessage(Message msg){
-            iconButton_Click();
-        }
-    };
+    private Handler clickHandler = new GameStartButtonHandler(this) ;
     private void iconButton_Click() {
         // ボタンを押したときの処理を記述
         if(!can_game_start)return;
@@ -80,4 +81,36 @@ public class TitleActivity extends AppCompatActivity {
 
 
     }
+
+    static class GameStartButtonHandler extends Handler
+    {
+        private final WeakReference<TitleActivity> activity_ref;
+
+        GameStartButtonHandler(TitleActivity activity)
+        {
+            activity_ref= new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            activity_ref.get().iconButton_Click();
+        }
+    }
+
+
+
+    private void TryToConnectWebAPI()
+    {
+//        try
+//        {
+//            URL url= new URL()
+//        }
+//        catch (IOException e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+
+    }
+
 }
